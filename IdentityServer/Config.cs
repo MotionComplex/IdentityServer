@@ -36,10 +36,12 @@ namespace IdentityServer
                 {
                     ClientId = "client",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
+
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
+
                     AllowedScopes =
                     {
                         "identityprovider"
@@ -49,6 +51,7 @@ namespace IdentityServer
                 {
                     ClientId = "ro.client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
@@ -58,19 +61,43 @@ namespace IdentityServer
                         "identityprovider"
                     }
                 },
+                //new Client
+                //{
+                //    ClientId = "authenticationclient",
+                //    ClientName = "AuthenticationClient",
+                //    AllowedGrantTypes = GrantTypes.Implicit,
+
+                //    RedirectUris = { "http://localhost:5002/signin-oidc" },
+                //    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+
+                //    AllowedScopes = new List<string>
+                //    {
+                //        IdentityServerConstants.StandardScopes.OpenId,
+                //        IdentityServerConstants.StandardScopes.Profile,
+                //    }
+                //},
                 new Client
                 {
                     ClientId = "authenticationclient",
-                    ClientName = "AuthenticationClient",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    ClientName = "Hybrid AuthenticationClient",
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
 
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
                     PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                    }
+                        "identityprovider",
+                        "taskapi"
+                    },
+                    AllowOfflineAccess = true
                 }
             };
         }

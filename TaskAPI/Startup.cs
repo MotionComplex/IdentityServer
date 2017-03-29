@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.IdentityModel.Tokens.Jwt;
 
-namespace AuthenticationClient
+namespace TaskAPI
 {
     public class Startup
     {
@@ -29,52 +28,25 @@ namespace AuthenticationClient
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvcCore()
+                .AddAuthorization()
+                .AddJsonFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.IsDevelopment())
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = "Cookies",
-            });
-
-            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-            {
-                AuthenticationScheme = "oidc",
-                SignInScheme = "Cookies",
-
                 Authority = "http://localhost:5000",
                 RequireHttpsMetadata = false,
-
-                ClientId = "authenticationclient",
-                ClientSecret = "secret",
-
-                ResponseType = "code id_token",
-                Scope = { "identityprovider", "offline_access" },
-                
-                GetClaimsFromUserInfoEndpoint = true,
-                SaveTokens = true
+                ApiName = "tasksapi"
             });
 
-            app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc();
         }
     }
 }
