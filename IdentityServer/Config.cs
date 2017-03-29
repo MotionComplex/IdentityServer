@@ -63,7 +63,7 @@ namespace IdentityServer
                     ClientId = "authenticationclient",
                     ClientName = "AuthenticationClient",
                     AllowedGrantTypes = GrantTypes.Implicit,
-                    
+
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
                     PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
                     AllowedScopes = new List<string>
