@@ -67,7 +67,7 @@ namespace AuthenticationClient
                 ClientSecret = "secret",
 
                 ResponseType = "code id_token",
-                Scope = { "identityprovider", "offline_access" },
+                Scope = { "identityprovider", "taskapi", "offline_access" },
                 
                 GetClaimsFromUserInfoEndpoint = true,
                 SaveTokens = true

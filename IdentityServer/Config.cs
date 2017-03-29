@@ -15,7 +15,8 @@ namespace IdentityServer
         {
             return new List<ApiResource>
             {
-                new ApiResource("identityprovider", "IdentityProvider API")
+                new ApiResource("identityprovider", "IdentityProvider API"),
+                new ApiResource("taskapi", "Task API")
             };
         }
 

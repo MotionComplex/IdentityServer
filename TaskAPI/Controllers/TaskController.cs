@@ -5,18 +5,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
+using System.Net.Http;
 
 namespace TaskAPI.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/task")]
+    [Route("[controller]")]
     [Authorize]
     public class TaskController : Controller
     {
         [HttpGet]
-        public string[] Get()
+        public HttpResponseMessage Get()
         {
-            return new string[] { "Task1", "Task2" };
+            HttpResponseMessage response;
+            //string value = "Task3";
+            //response = value;
+
+            return response;
         }
     }
 }

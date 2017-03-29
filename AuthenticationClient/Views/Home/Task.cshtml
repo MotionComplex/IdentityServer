@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Authentication;
+@{
+    ViewData["Title"] = "Task";
+}
+<h2>@ViewData["Title"]</h2>
+
+<h3>Tasks</h3>
+
+@foreach (var i in Model)
+            {
+    <tr>
+        @i
+    </tr>
+}
