@@ -16,7 +16,8 @@ namespace IdentityServer
             return new List<ApiResource>
             {
                 new ApiResource("identityprovider", "IdentityProvider API"),
-                new ApiResource("taskapi", "Task API")
+                new ApiResource("taskapi", "Task API"),
+                new ApiResource("holidayapi", "Holiday API")
             };
         }
 
@@ -59,24 +60,10 @@ namespace IdentityServer
                     },
                     AllowedScopes =
                     {
-                        "identityprovider"
+                        "identityprovider",
+                        "taskapi"
                     }
                 },
-                //new Client
-                //{
-                //    ClientId = "authenticationclient",
-                //    ClientName = "AuthenticationClient",
-                //    AllowedGrantTypes = GrantTypes.Implicit,
-
-                //    RedirectUris = { "http://localhost:5002/signin-oidc" },
-                //    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-
-                //    AllowedScopes = new List<string>
-                //    {
-                //        IdentityServerConstants.StandardScopes.OpenId,
-                //        IdentityServerConstants.StandardScopes.Profile,
-                //    }
-                //},
                 new Client
                 {
                     ClientId = "authenticationclient",
@@ -96,7 +83,29 @@ namespace IdentityServer
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "identityprovider",
-                        "taskapi"
+                        "taskapi",
+                        "offline_access",
+                        "holidayapi"
+                    },
+                    AllowOfflineAccess = true
+                },
+                new Client
+                {
+                    ClientId = "travelmanager",
+                    ClientName = "TravelManager",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { "http://localhost:5002/signin-oidc", "http://localhost:5050" },
+                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc", "http://localhost:5050" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "identityprovider",
+                        "offline_access",
+                        "holidayapi"
                     },
                     AllowOfflineAccess = true
                 }

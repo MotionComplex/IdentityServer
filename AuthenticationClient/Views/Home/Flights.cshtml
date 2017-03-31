@@ -1,0 +1,16 @@
+﻿@model List<AuthenticationClient.ViewModels.FlightViewModel>
+@{
+    ViewData["Title"] = "Flights";
+}
+<h2>@ViewData["Title"]</h2>
+
+<h3>Flights</h3>
+
+@foreach(var flight in Model)
+{
+    @Html.DisplayFor(model => flight.UID)
+    @Html.DisplayFor(model => flight.Departure)
+    @Html.DisplayFor(model => flight.Destination)
+    @Html.DisplayFor(model => flight.DepartureDate)
+    @Html.DisplayFor(model => flight.ArrivalDate)
+}

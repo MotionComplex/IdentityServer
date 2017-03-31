@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Authentication;
+﻿@model List<AuthenticationClient.ViewModels.TaskViewModel>
 @{
     ViewData["Title"] = "Task";
 }
@@ -6,9 +6,27 @@
 
 <h3>Tasks</h3>
 
-@foreach (var i in Model)
-            {
-    <tr>
-        @i
-    </tr>
+@foreach(var task in Model)
+{
+    @Html.DisplayFor(model => task.Id)
+    @Html.DisplayFor(model => task.Name)
 }
+
+@*@foreach(var task in Model)
+{
+    < div >
+        @task.Id
+    </ div >
+    <div>
+        @task.Name
+    </div>
+    <div>
+        @task.Description
+    </div>
+    <div>
+        @task.StartDate
+    </div>
+    <div>
+        @task.EndDate
+    </div>
+}*@

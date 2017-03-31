@@ -43,7 +43,6 @@ namespace IdentityProvider
             {
                 Authority = "http://localhost:5000",
                 RequireHttpsMetadata = false,
-
                 ApiName = "identityprovider"
             });
             

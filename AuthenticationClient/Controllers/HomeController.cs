@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using AuthenticationClient.ViewModels;
+using Newtonsoft.Json;
 
 namespace AuthenticationClient.Controllers
 {
@@ -26,47 +28,60 @@ namespace AuthenticationClient.Controllers
         }
 
         [Authorize]
-        public IActionResult Task()
+        public async Task<IActionResult> Task()
         {
             ViewData["Message"] = "Task page.";
 
-            //HttpClient client = new HttpClient();
-            //var result = client.GetAsync("http://localhost:5003/task").Result;
-
-            //string content = "";
-
-            //if (result.IsSuccessStatusCode)
-            //{
-            //    content = result.Content.ReadAsStringAsync().Result;
-            //}
-
-            return View();
-        }
-
-        public async Task<IActionResult> CallApiUsingUserAccessToken()
-        {
             var accessToken = await HttpContext.Authentication.GetTokenAsync("access_token");
 
-            var client = new HttpClient();
+            HttpClient client = new HttpClient();
             client.SetBearerToken(accessToken);
-            var content = await client.GetStringAsync("http://localhost:5001/identity");
 
-            ViewBag.Json = JArray.Parse(content).ToString();
-            return View("json");
+            var result = client.GetAsync("http://localhost:5003/task").Result;
+            var content = string.Empty;
+            var viewContent = new List<TaskViewModel>();
+
+            if (result.IsSuccessStatusCode)
+            {
+                viewContent = ConvertContentToModel(result);
+            }
+            
+            return View(viewContent);
         }
 
-        public async Task<IActionResult> CallTaskApiUsingUserAccessToken()
+        [Authorize]
+        public async Task<IActionResult> Flights()
         {
+            ViewData["Message"] = "Task page.";
+
             var accessToken = await HttpContext.Authentication.GetTokenAsync("access_token");
 
-            var client = new HttpClient();
+            HttpClient client = new HttpClient();
             client.SetBearerToken(accessToken);
-            var content = await client.GetStringAsync("http://localhost:5003/task");
 
-            ViewBag.Json = JArray.Parse(content).ToString();
-            return View("json");
+            var result = client.GetAsync("http://localhost:5777/api/flight").Result;
+            var content = string.Empty;
+            var viewContent = new List<FlightViewModel>();
+
+            if (result.IsSuccessStatusCode)
+            {
+                content = result.Content.ReadAsStringAsync().Result;
+                viewContent = JsonConvert.DeserializeObject<List<FlightViewModel>>(content);
+
+                return View(viewContent);
+            }
+
+            return View("../Shared/Error/Unauthorized");           
         }
 
+        private List<TaskViewModel> ConvertContentToModel(HttpResponseMessage result)
+        {
+            var content = result.Content.ReadAsStringAsync().Result;
+            var tasklist = JsonConvert.DeserializeObject<List<TaskViewModel>>(content);
+
+            return tasklist;
+        }
+        
         public async Task Logout()
         {
             await HttpContext.Authentication.SignOutAsync("Cookies");

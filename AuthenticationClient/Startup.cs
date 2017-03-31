@@ -73,6 +73,23 @@ namespace AuthenticationClient
                 SaveTokens = true
             });
 
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            {
+                AuthenticationScheme = "oidc",
+                SignInScheme = "Cookies",
+
+                Authority = "http://localhost:5000",
+                RequireHttpsMetadata = false,
+
+                ClientId = "travelmanager",
+
+                ResponseType = "code id_token",
+                Scope = { "openid", "profile", "identityprovider", "holidayapi", "offline_access" },
+
+                GetClaimsFromUserInfoEndpoint = true,
+                SaveTokens = true
+            });
+
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }

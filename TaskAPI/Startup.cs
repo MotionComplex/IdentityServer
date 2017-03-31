@@ -43,7 +43,7 @@ namespace TaskAPI
             {
                 Authority = "http://localhost:5000",
                 RequireHttpsMetadata = false,
-                ApiName = "tasksapi"
+                ApiName = "taskapi"
             });
 
             app.UseMvc();
